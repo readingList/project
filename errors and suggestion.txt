@@ -1,0 +1,11 @@
+erros:
+
+
+
+
+
+
+suggestions:
+
+1. Menu driven program    // in final result
+2. 
