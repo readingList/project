@@ -32,15 +32,38 @@ class Book{
 int main(){
 
     Book B1;
-    B1.createBook("A Brief History of Time",
-                  "Stephen Hawking",
-                  "Popular Science",
-                  4.8,
-                  256,
-                  true
-    );
-
-    B1.showBook();
+    int choice;
+    string na, au, ge;
+	int ra, pa;
+	bool re;
+	char c;
+    
+    cout<<"Menu: (Enter corresponding serial number)";
+    cout<<"\n1. Create Book \n2. Display Book \n3. Modify \n";
+    cin>>choice;
+    
+    switch(choice)
+	{
+		case 1: {
+				cout<<"\nEnter name of the book: ";
+				cin>>c;
+				getline(cin, na);
+				cout<<"\nEnter name of the author: \n";
+				getline(cin, au);
+				cout<<"\nEnter genre: \n";
+				getline(cin, ge);
+				cout<<"\nRate the book: \n";
+				cin>>ra;
+				cout<<"\nEnter number of pages read: \n";
+				cin>>pa;
+				B1.createBook(na, au, ge, ra, pa, true);
+   			    break;
+   			}
+   		case 2: {
+			    B1.showBook();
+   			    break;
+   			}
+	}
 
     cout<<"\nThe end is near...\n";
     return 0;
