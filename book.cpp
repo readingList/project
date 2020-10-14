@@ -1,7 +1,10 @@
 #include <iostream>
 #include <cstring>
+#include <fstream>
 
 using namespace std;
+
+ofstream MyFile("ReadingList.txt");
 
 class Book{
     private:
@@ -19,6 +22,7 @@ class Book{
             rating = ra;
             pages = pa;
             onRead = re;
+            MyFile<<"\nBook Name: "<<name<<"\nAuthor: "<<author<<"\nGenre: "<<genre<<"\nRating: "<<rating<<"\nNo. of pages: "<<pages;
         }
         void showBook(){
             cout<<"\nName of the Book: "<<name;
