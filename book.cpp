@@ -1,10 +1,9 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 #include <fstream>
+#include <stdio.h>
 
 using namespace std;
-
-ofstream MyFile("ReadingList.txt");
 
 class Book{
     private:
@@ -12,64 +11,97 @@ class Book{
         string author;
         string genre;
         float rating;
-        int pages;
         bool onRead;
     public:
-        void createBook(string na, string au, string ge, int ra, int pa, bool re){
+        void createBook(string na, string au, string ge, int ra, bool re){
             name = na;
             author = au;
             genre = ge;
             rating = ra;
-            pages = pa;
             onRead = re;
-            MyFile<<"\nBook Name: "<<name<<"\nAuthor: "<<author<<"\nGenre: "<<genre<<"\nRating: "<<rating<<"\nNo. of pages: "<<pages;
         }
         void showBook(){
             cout<<"\nName of the Book: "<<name;
             cout<<"\nAuthor: "<<author;
             cout<<"\nGenre: "<<genre;
             cout<<"\nRating: "<<rating;
-            cout<<"\nNo. of Pages: "<<pages;
         }
+        bool getRead(){
+        	return onRead;
+		}
 };
 
+void saveFile(Book myBook){
+	ofstream fout("bookDatabase.dat",ios::app|ios::binary);
+	fout.write((char*)&myBook,sizeof(Book));
+	fout.close();
+	cout<<"\nThe Book is Saved!\n";
+}
+/*
+int getBook(){
+	Book readB;
+	int flag = 0;
+	ifstream fin("bookDatabase.dat",ios::binary);
+	while(fin.read((char*)&readB,sizeof(Book))){
+		if(readB.getRead()){
+			flag += 1;
+			cout<<"Book "<<flag<<": ";
+			readB.showBook();
+			cout<<"\n";
+		}
+	}
+	return flag;
+}
+*/
 int main(){
 
-    Book B1;
+    Book B;
     int choice;
-    string na, au, ge;
-	int ra, pa;
-	bool re;
-	char c;
+    string name, author, genre;
+	float rating;
+    char wish = 'y', re;
     
-    cout<<"Menu: (Enter corresponding serial number)";
-    cout<<"\n1. Create Book \n2. Display Book \n3. Modify \n";
-    cin>>choice;
+    while(wish=='y' || wish=='Y'){
+    	cout<<"\n -: Menu :-\n";
+    	cout<<"\n1. Create Book \n2. Display Books on read \n3. More functions soon \n4. Exit\n";
+		cout<<"\nEnter corresponding serial number: ";
+    	cin>>choice;
+		getchar();
     
-    switch(choice)
-	{
-		case 1: {
-				cout<<"\nEnter name of the book: ";
-				cin>>c;
-				getline(cin, na);
-				cout<<"\nEnter name of the author: \n";
-				getline(cin, au);
-				cout<<"\nEnter genre: \n";
-				getline(cin, ge);
-				cout<<"\nRate the book: \n";
-				cin>>ra;
-				cout<<"\nEnter number of pages read: \n";
-				cin>>pa;
-				B1.createBook(na, au, ge, ra, pa, true);
-   			    break;
-   			}
-   		case 2: {
-			    B1.showBook();
-   			    break;
-   			}
+		switch(choice){
+			case 1: cout<<"\nEnter name of the book: ";
+					getline(cin, name);
+					cout<<"Enter name of the author: ";
+					getline(cin, author);
+					cout<<"Enter genre: ";
+					getline(cin, genre);
+					cout<<"Rate the book: ";
+					cin>>rating;
+					readChoice:
+						cout<<"Add book on read (y/n): ";
+						cin>>re;
+						if(re=='y' || re=='Y')
+							B.createBook(name, author, genre, rating, true);
+						else if(re=='n' || re=='N')
+							B.createBook(name, author, genre, rating, false);
+						else{
+							cout<<"Wrong choice! Enter again...\n";
+							goto readChoice;
+						}
+					saveFile(B);
+					break;
+			case 2: //if(!getBook())
+						cout<<"Book on read will be displayed here...\n";
+					break;
+			case 3: cout<<"Stay tuned !!\n";
+					break;
+			case 4: exit(0);
+					break;
+			default: cout<<"Wrong Choice.\n";
+					break;
+		}
+		cout<<"\nWant to enter more? (y/n): ";
+		cin>>wish;
 	}
-
-    cout<<"\nThe end is near...\n";
     return 0;
-    
 }
