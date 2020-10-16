@@ -2,61 +2,69 @@
 #include <string>
 #include <fstream>
 #include <stdio.h>
+#include <sstream>
 
 using namespace std;
 
 class Book{
-    private:
+	private:
         string name;
         string author;
         string genre;
         float rating;
         bool onRead;
+		
     public:
-        void createBook(string na, string au, string ge, int ra, bool re){
-            name = na;
-            author = au;
-            genre = ge;
-            rating = ra;
-            onRead = re;
-        }
-        void showBook(){
-            cout<<"\nName of the Book: "<<name;
-            cout<<"\nAuthor: "<<author;
-            cout<<"\nGenre: "<<genre;
-            cout<<"\nRating: "<<rating;
-        }
+        void createBook(string na, string au, string ge, int ra, bool re);
+        void showBook();
+		void getBooks();
         bool getRead(){
         	return onRead;
 		}
 };
 
-void saveFile(Book myBook){
-	ofstream fout("bookDatabase.dat",ios::app|ios::binary);
-	fout.write((char*)&myBook,sizeof(Book));
-	fout.close();
-	cout<<"\nThe Book is Saved!\n";
+void Book::createBook(string na, string au, string ge, int ra, bool re){
+    Book B;
+	B.name = na;
+    B.author = au;
+    B.genre = ge;
+    B.rating = ra;
+    B.onRead = re;
+
+	ofstream fout;
+	fout.open("bookDatabase.txt", ios::app);
+	fout.write((char*)&B, sizeof(B));
+	cout<<"\nThe Book with above attributes is Saved!\n";
 }
-/*
-int getBook(){
-	Book readB;
-	int flag = 0;
-	ifstream fin("bookDatabase.dat",ios::binary);
-	while(fin.read((char*)&readB,sizeof(Book))){
-		if(readB.getRead()){
-			flag += 1;
-			cout<<"Book "<<flag<<": ";
-			readB.showBook();
+void Book::showBook(){
+	cout<<"\nName of the Book: "<<name;
+    cout<<"\nAuthor: "<<author;
+    cout<<"\nGenre: "<<genre;
+    cout<<"\nRating: "<<rating;
+}
+
+int getBooks(){
+	ifstream fin;
+	fin.open("bookDatabase.txt", ios::in);
+	Book B;
+	int Bcount = 0;
+	fin.read((char*)&B, sizeof(B));
+	
+	while(!fin.eof()){
+		if (B.getRead()){
+			cout<<"Book"<<++Bcount;
+			B.showBook();
 			cout<<"\n";
 		}
+		fin.read((char*)&B, sizeof(B));
 	}
-	return flag;
+	return Bcount;
 }
-*/
+
 int main(){
 
     Book B;
-    int choice;
+    int choice, noB;
     string name, author, genre;
 	float rating;
     char wish = 'y', re;
@@ -88,17 +96,16 @@ int main(){
 							cout<<"Wrong choice! Enter again...\n";
 							goto readChoice;
 						}
-					saveFile(B);
 					break;
-			case 2: //if(!getBook())
-						cout<<"Book on read will be displayed here...\n";
+			case 2: noB = getBooks();
+					if(!noB) cout<<"No books are on read.\n";
 					break;
 			case 3: cout<<"Stay tuned !!\n";
 					break;
 			case 4: exit(0);
 					break;
 			default: cout<<"Wrong Choice.\n";
-					break;
+					 break;
 		}
 		cout<<"\nWant to enter more? (y/n): ";
 		cin>>wish;

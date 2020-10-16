@@ -1,11 +1,9 @@
 erros:
-
-
-
-
-
+1. function getBooks() is not working.
+2. maybe the object is not saved properly.
 
 suggestions:
 
-1. Menu driven program    // in final result
-2. 
+1. Menu driven program    // ✔
+2. Firstly have to stringify the object to pass it to file handling
+ or, may use string stream.
