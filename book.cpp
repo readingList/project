@@ -32,7 +32,12 @@ void Book::createBook(string na, string au, string ge, int ra, bool re){
     B.onRead = re;
 
 	ofstream fout;
-	fout.open("bookDatabase.txt", ios::app);
+	fout.open("bookDatabase.txt", ios::out | ios::app);
+	if( !fout,is_open() ) { // file couldn't be opened
+      cerr << "Error: file could not be opened" << endl;
+      exit(1);
+	}
+	
 	fout.write((char*)&B, sizeof(B));
 	cout<<"\nThe Book with above attributes is Saved!\n";
 }
