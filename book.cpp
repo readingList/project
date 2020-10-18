@@ -21,10 +21,10 @@ class Book{
         bool getRead(){
         	return onRead;
 		}
-};
+}B;
 
 void Book::createBook(string na, string au, string ge, int ra, bool re){
-    Book B;
+    
 	B.name = na;
     B.author = au;
     B.genre = ge;
@@ -33,42 +33,53 @@ void Book::createBook(string na, string au, string ge, int ra, bool re){
 
 	ofstream fout;
 	fout.open("bookDatabase.txt", ios::out | ios::app);
-	if( !fout,is_open() ) { // file couldn't be opened
+	if( !fout.is_open() ) { // file couldn't be opened
       cerr << "Error: file could not be opened" << endl;
       exit(1);
 	}
 	
 	fout.write((char*)&B, sizeof(B));
+	
 	cout<<"\nThe Book with above attributes is Saved!\n";
+	
+	fout.close();
 }
 void Book::showBook(){
-	cout<<"\nName of the Book: "<<name;
-    cout<<"\nAuthor: "<<author;
-    cout<<"\nGenre: "<<genre;
-    cout<<"\nRating: "<<rating;
+	
+	cout<<"\nName of the Book: "<<B.name;
+    cout<<"\nAuthor: "<<B.author;
+    cout<<"\nGenre: "<<B.genre;
+    cout<<"\nRating: "<<B.rating;
 }
 
 int getBooks(){
+	
 	ifstream fin;
 	fin.open("bookDatabase.txt", ios::in);
-	Book B;
+	
 	int Bcount = 0;
-	fin.read((char*)&B, sizeof(B));
+	
+	fin.seekg(0);
 	
 	while(!fin.eof()){
 		if (B.getRead()){
+			fin.read((char*)&B, sizeof(B));
 			cout<<"Book"<<++Bcount;
 			B.showBook();
 			cout<<"\n";
 		}
 		fin.read((char*)&B, sizeof(B));
 	}
+	
+	
+	fin.close();
+	
 	return Bcount;
 }
 
 int main(){
 
-    Book B;
+    
     int choice, noB;
     string name, author, genre;
 	float rating;
