@@ -2,7 +2,6 @@
 #include <string>
 #include <fstream>
 #include <stdio.h>
-#include <sstream>
 
 using namespace std;
 
@@ -13,7 +12,6 @@ class Book{
         string genre;
         float rating;
         bool onRead;
-		
     public:
         void createBook(string na, string au, string ge, int ra, bool re);
         void showBook();
@@ -23,8 +21,8 @@ class Book{
 		}
 }B;
 
-void Book::createBook(string na, string au, string ge, int ra, bool re){
-    
+void Book::createBook(string na, string au, string ge, float ra, bool re){
+
 	B.name = na;
     B.author = au;
     B.genre = ge;
@@ -32,20 +30,16 @@ void Book::createBook(string na, string au, string ge, int ra, bool re){
     B.onRead = re;
 
 	ofstream fout;
-	fout.open("bookDatabase.txt", ios::out | ios::app);
-	if( !fout.is_open() ) { // file couldn't be opened
+	fout.open("bookDatabase.dat", ios::binary | ios::app);
+	if(!fout.is_open()){
       cerr << "Error: file could not be opened" << endl;
       exit(1);
 	}
-	
 	fout.write((char*)&B, sizeof(B));
-	
 	cout<<"\nThe Book with above attributes is Saved!\n";
-	
 	fout.close();
 }
 void Book::showBook(){
-	
 	cout<<"\nName of the Book: "<<B.name;
     cout<<"\nAuthor: "<<B.author;
     cout<<"\nGenre: "<<B.genre;
@@ -53,14 +47,13 @@ void Book::showBook(){
 }
 
 int getBooks(){
-	
+
 	ifstream fin;
-	fin.open("bookDatabase.txt", ios::in);
-	
+	fin.open("bookDatabase.dat", ios::binary);
+
 	int Bcount = 0;
-	
-	fin.seekg(0);
-	
+	//fin.seekg(0);
+
 	while(!fin.eof()){
 		if (B.getRead()){
 			fin.read((char*)&B, sizeof(B));
@@ -70,28 +63,25 @@ int getBooks(){
 		}
 		fin.read((char*)&B, sizeof(B));
 	}
-	
-	
 	fin.close();
-	
+
 	return Bcount;
 }
 
 int main(){
 
-    
     int choice, noB;
     string name, author, genre;
 	float rating;
     char wish = 'y', re;
-    
+
     while(wish=='y' || wish=='Y'){
     	cout<<"\n -: Menu :-\n";
     	cout<<"\n1. Create Book \n2. Display Books on read \n3. More functions soon \n4. Exit\n";
 		cout<<"\nEnter corresponding serial number: ";
     	cin>>choice;
 		getchar();
-    
+
 		switch(choice){
 			case 1: cout<<"\nEnter name of the book: ";
 					getline(cin, name);
