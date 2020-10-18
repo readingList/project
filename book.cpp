@@ -71,7 +71,6 @@ int getBooks(){
 		fin.read((char*)&B, sizeof(B));
 	}
 	
-	
 	fin.close();
 	
 	return Bcount;
