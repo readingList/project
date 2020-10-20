@@ -13,7 +13,7 @@ class Book{
         float rating;
         bool onRead;
     public:
-        void createBook(string na, string au, string ge, int ra, bool re);
+        void createBook(string na, string au, string ge, float  ra, bool re);
         void showBook();
 		void getBooks();
         bool getRead(){
