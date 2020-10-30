@@ -19,57 +19,68 @@ class Book{
         bool getRead(){
         	return onRead;
 		}
-}B;
+};
 
 void Book::createBook(string na, string au, string ge, float ra, bool re){
 
+    Book B;
 	B.name = na;
     B.author = au;
     B.genre = ge;
     B.rating = ra;
     B.onRead = re;
 
+    /*
 	ofstream fout;
-	fout.open("bookDatabase.dat", ios::binary | ios::app);
+	fout.open("bookDatabase.txt", ios::binary | ios::app);
 	if(!fout.is_open()){
       cerr << "Error: file could not be opened" << endl;
       exit(1);
 	}
 	fout.write((char*)&B, sizeof(B));
+
+	*/
+
+	string Stringified = "*" + na + "*" + au + "*" + ge + "*" + to_string(ra) + "*" + to_string(re);
+	cout<<"->"<<Stringified<<"\n";
+
+	ofstream fout;
+	fout.open("bookDatabase.txt", ios::app);
+	fout<<Stringified;
+	fout<<"\n";
 	cout<<"\nThe Book with above attributes is Saved!\n";
 	fout.close();
+
 }
 void Book::showBook(){
-	cout<<"\nName of the Book: "<<B.name;
-    cout<<"\nAuthor: "<<B.author;
-    cout<<"\nGenre: "<<B.genre;
-    cout<<"\nRating: "<<B.rating;
+	cout<<"\nName of the Book: "<<name;
+    cout<<"\nAuthor: "<<author;
+    cout<<"\nGenre: "<<genre;
+    cout<<"\nRating: "<<rating;
 }
 
 int getBooks(){
-
+    /*
+    Book B;
 	ifstream fin;
-	fin.open("bookDatabase.dat", ios::binary);
-
+	fin.open("bookDatabase.txt");
+    if(!fin.is_open()){
+      cerr << "Error: file could not be opened" << endl;
+      exit(1);
+	}
 	int Bcount = 0;
 	//fin.seekg(0);
 
-	while(!fin.eof()){
-		if (B.getRead()){
-			fin.read((char*)&B, sizeof(B));
-			cout<<"Book"<<++Bcount;
-			B.showBook();
-			cout<<"\n";
-		}
-		fin.read((char*)&B, sizeof(B));
-	}
+	fin>>
 	fin.close();
-
 	return Bcount;
+	*/
+	return 0;
 }
 
 int main(){
 
+    Book B;
     int choice, noB;
     string name, author, genre;
 	float rating;
@@ -77,7 +88,7 @@ int main(){
 
     while(wish=='y' || wish=='Y'){
     	cout<<"\n -: Menu :-\n";
-    	cout<<"\n1. Create Book \n2. Display Books on read \n3. More functions soon \n4. Exit\n";
+    	cout<<"\n 1. Create Book\n 2. Display Books on read\n 3. More functions soon\n 4. Exit\n";
 		cout<<"\nEnter corresponding serial number: ";
     	cin>>choice;
 		getchar();
