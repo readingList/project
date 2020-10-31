@@ -43,10 +43,8 @@ void Book::createBook(string na, string au, string ge, float ra, bool re)
 		exit(1);
 	}
 	fout.write((char *)&B, sizeof(B));
+	B.showBook();
 
-	string Stringified = "*" + na + "*" + au + "*" + ge + "*" + to_string(ra) + "*" + to_string(re);
-	cout << "->" << Stringified << "\n";
-	cout << Stringified;
 	cout << "\n";
 	cout << "\nThe Book with above attributes is Saved!\n";
 
@@ -62,7 +60,7 @@ void Book::showBook()
 
 int getBooks()
 {
-	Book *B = new Book;
+	Book B;
 	ifstream fin;
 	fin.open("bookDatabase.dat", ios::binary);
 	if (!fin.is_open())
@@ -71,9 +69,13 @@ int getBooks()
 		exit(1);
 	}
 	int Bcount = 0;
-	//fin.seekg(0);
-	while (fin.read(B, sizeof(B)))
+	fin.seekg(0);
+
+	while (fin.read((char *)&B, sizeof(B)))
+	{
 		Bcount++;
+		B.showBook();
+	}
 	fin.close();
 	return Bcount;
 }

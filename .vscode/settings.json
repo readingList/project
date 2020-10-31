@@ -3,6 +3,7 @@
         "*.json": "jsonc",
         "xstring": "cpp",
         "iosfwd": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "iostream": "cpp"
     }
 }
