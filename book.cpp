@@ -1,13 +1,16 @@
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
-#include <string>
+#include <string.h>
+#include <conio.h>
+
 
 using namespace std;
 
 class Book
 {
 private:
+	
 	string name;
 	string author;
 	string genre;
@@ -15,19 +18,23 @@ private:
 	bool onRead;
 
 public:
-	void createBook(string na, string au, string ge, float ra, bool re);
+	void createBook( string na, string au, string ge, float ra, bool re);
 	void showBook();
 	void getBooks();
 	bool getRead()
 	{
 		return onRead;
 	}
-};
+	void report(){
+		cout<<name<<"\t"<<author<<endl;
+	}
+    
+}B;
 
 void Book::createBook(string na, string au, string ge, float ra, bool re)
 {
 
-	Book B;
+	
 	B.name = na;
 	B.author = au;
 	B.genre = ge;
@@ -36,33 +43,55 @@ void Book::createBook(string na, string au, string ge, float ra, bool re)
 
 	ofstream fout;
 
-	fout.open("bookDatabase.dat", ios::binary | ios::app);
+	char ch;
+    fout.open("bookDatabase.dat",ios::out|ios::app);
 	if (!fout.is_open())
 	{
 		cerr << "Error: file could not be opened" << endl;
 		exit(1);
 	}
-	fout.write((char *)&B, sizeof(B));
-	B.showBook();
+    do
+    {
+      
+        fout.write((char*)&B,sizeof(Book));
+        cout<<"\n\nDo you want to add more record..(y/n?)";
+        cin>>ch;
+    }while(ch=='y'||ch=='Y');
+   
+   	B.showBook();
 
 	cout << "\n";
 	cout << "\nThe Book with above attributes is Saved!\n";
 
 	fout.close();
 }
+
 void Book::showBook()
 {
-	cout << "\nName of the Book: " << name;
-	cout << "\nAuthor: " << author;
-	cout << "\nGenre: " << genre;
-	cout << "\nRating: " << rating;
+	cout<<"\nBOOK DETAILS\n";
+    int flag=0;
+	ifstream fin;
+    fin.open("bookDatabase.dat",ios::in);
+    while(fin.read((char*)&B,sizeof(Book)))
+    {
+        if(!fin.eof())
+        {
+            B.showBook();
+             flag=1;
+        }
+    }
+    
+    fin.close();
+    if(flag==0)
+        cout<<"\n\nBook does not exist";
+    getch();
 }
 
 int getBooks()
 {
 	Book B;
 	ifstream fin;
-	fin.open("bookDatabase.dat", ios::binary);
+	fin.open("bookDatabase.dat", ios::binary| ios::in);
 	if (!fin.is_open())
 	{
 		cerr << "Error: file could not be opened" << endl;
@@ -71,7 +100,7 @@ int getBooks()
 	int Bcount = 0;
 	fin.seekg(0);
 
-	while (fin.read((char *)&B, sizeof(B)))
+	while (fin.read((char *)&B, sizeof(Book)))
 	{
 		Bcount++;
 		B.showBook();
@@ -79,7 +108,31 @@ int getBooks()
 	fin.close();
 	return Bcount;
 }
+/*
+void display_allb()
+{
+    
+	fstream fout;
+    fout.open("book.dat",ios::in);
+    if(!fout)
+    {
+        cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
+               getch();
+               return;
+         }
 
+    cout<<"\n\nBook LIST\n\n";
+   
+    cout<<"Book Number      "<<"Book Name	"<<"Author		\n";
+    
+    while(fout.read((char*)&B,sizeof(Book)))
+    {
+        B.report();
+    }
+         fout.close();
+         getch();
+}
+*/
 int main()
 {
 
@@ -100,6 +153,7 @@ int main()
 		switch (choice)
 		{
 		case 1:
+			
 			cout << "\nEnter name of the book: ";
 			getline(cin, name);
 			cout << "Enter name of the author: ";
