@@ -1,6 +1,7 @@
 erros:
-1. function getBooks() is not working. //resolved
-2. maybe the object is not saved properly. //resolved
+1. Do you want to add more record..(y/n?)y  //not working got stuck in loop
+2. Unexpected appearance of "BOOK DETAILS" and "Book does not exist"
+3. Cant read book mp, its not saved at first place.
 
 suggestions:
 

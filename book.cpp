@@ -10,7 +10,7 @@ using namespace std;
 class Book
 {
 private:
-	
+
 	string name;
 	string author;
 	string genre;
@@ -28,13 +28,13 @@ public:
 	void report(){
 		cout<<name<<"\t"<<author<<endl;
 	}
-    
+
 }B;
 
 void Book::createBook(string na, string au, string ge, float ra, bool re)
 {
 
-	
+
 	B.name = na;
 	B.author = au;
 	B.genre = ge;
@@ -52,12 +52,12 @@ void Book::createBook(string na, string au, string ge, float ra, bool re)
 	}
     do
     {
-      
+
         fout.write((char*)&B,sizeof(Book));
         cout<<"\n\nDo you want to add more record..(y/n?)";
         cin>>ch;
     }while(ch=='y'||ch=='Y');
-   
+
    	B.showBook();
 
 	cout << "\n";
@@ -80,7 +80,7 @@ void Book::showBook()
              flag=1;
         }
     }
-    
+
     fin.close();
     if(flag==0)
         cout<<"\n\nBook does not exist";
@@ -111,7 +111,7 @@ int getBooks()
 /*
 void display_allb()
 {
-    
+
 	fstream fout;
     fout.open("book.dat",ios::in);
     if(!fout)
@@ -122,9 +122,9 @@ void display_allb()
          }
 
     cout<<"\n\nBook LIST\n\n";
-   
+
     cout<<"Book Number      "<<"Book Name	"<<"Author		\n";
-    
+
     while(fout.read((char*)&B,sizeof(Book)))
     {
         B.report();
@@ -153,7 +153,7 @@ int main()
 		switch (choice)
 		{
 		case 1:
-			
+
 			cout << "\nEnter name of the book: ";
 			getline(cin, name);
 			cout << "Enter name of the author: ";
