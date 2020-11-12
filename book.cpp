@@ -50,15 +50,7 @@ void Book::createBook(string na, string au, string ge, float ra, bool re)
 		cerr << "Error: file could not be opened" << endl;
 		exit(1);
 	}
-    do
-    {
-
-        fout.write((char*)&B,sizeof(Book));
-        cout<<"\n\nDo you want to add more record..(y/n?)";
-        cin>>ch;
-    }while(ch=='y'||ch=='Y');
-
-   	B.showBook();
+    fout.write((char *)&B, sizeof(B));
 
 	cout << "\n";
 	cout << "\nThe Book with above attributes is Saved!\n";
@@ -76,8 +68,11 @@ void Book::showBook()
     {
         if(!fin.eof())
         {
-            B.showBook();
-             flag=1;
+            cout << "\nName of the Book: " << B.name;
+            cout << "\nAuthor: " << B.author;
+            cout << "\nGenre: " << B.genre;
+            cout << "\nRating: " << B.rating;;
+            flag=1;
         }
     }
 
