@@ -26,12 +26,12 @@ public:
 			cout<<"\nEnter Book's rating: ";
 			cin>>rating;
 			cout<<"\nAdd book on read (y/n): ";
-			cin >> re;
-			while(re != 'y' || re != 'Y' || re != 'n' || re != 'N')
+			cin>>onRead;
+			while(onRead != 'y' || onRead != 'Y' || onRead != 'n' || onRead != 'N')
 				{
 					cout<<"\nWrong choice! Enter again...\n";
 					cout<<"\nAdd book on read (y/n): ";
-					cin>>re;
+					cin>>onRead;
 				}
 			cout<<"\n\nBook Created !";
 		}
@@ -48,13 +48,13 @@ public:
 	void modify_book()
 		{
 			cout<<"\nModify Book Name: ";
-			gets(bname);
+			gets(bookName);
 			cout<<"\nModify Author's Name: ";
-			gets(aname);
+			gets(authorName);
 			cout<<"\nModify Book's rating: ";
 			cin>>rating;
 		}
-	
+
 	bool get_read()
 		{
 			return onRead;
@@ -63,16 +63,16 @@ public:
 };
 
 fstream fp,fp1;
-book bk;
+Book bk;
 
 void write_book()
 	{
 		char ch;
 		fp.open("book.dat",ios::out|ios::app);
 		do
-			{   
+			{
 				bk.create_book();
-				fp.write((char*)&bk,sizeof(book));
+				fp.write((char*)&bk,sizeof(Book));
 				cout<<"\n\nDo you want to add more record..(y/n?)";
 				cin>>ch;
 			}while(ch=='y' || ch=='Y');
@@ -84,7 +84,7 @@ void display_book()
 		cout<<"\nBook Details\n";
 		int flag=0;
 		fp1.open("book.dat",ios::in);
-		while(fp1.read((char*)&bk,sizeof(book)))
+		while(fp1.read((char*)&bk,sizeof(Book)))
 			{
 				if(bk.get_read())
 					{
@@ -107,9 +107,9 @@ void all_books()
 			}
 
 		cout<<"\nAll Books\n\n";
-		while(fp1.read((char*)&bk,sizeof(book)))
+		while(fp1.read((char*)&bk,sizeof(Book)))
 			{
-				bk.show();
+				bk.show_book();
 			}
 		fp1.close();
 	}
@@ -127,7 +127,7 @@ int main()
 			cout << "\n 1. Create Book\n 2. Display Books on read\n 3. Display All Books\n 4. Exit\n";
 			cout << "\nEnter corresponding serial number: ";
 			cin >> choice;
-			
+
 			switch (choice)
 				{
 				case 1:
