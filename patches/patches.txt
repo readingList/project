@@ -1,0 +1,165 @@
+class book
+{
+	char bno[6];
+	char bname[50];
+	char aname[20];
+  public:
+	void create_book()
+	{
+        cout<<"\nNEW BOOK ENTRY...\n";
+        cout<<"\nEnter The book no.";
+        cin>>bno;
+        cout<<"\n\nEnter The Name of The Book ";
+        gets(bname);
+        cout<<"\n\nEnter The Author's Name ";
+        gets(aname);
+        cout<<"\n\n\nBook Created..";
+    }
+
+    void show_book()
+    {
+        cout<<"\nBook no. : "<<bno;
+        cout<<"\nBook Name : ";
+        puts(bname);
+        cout<<"Author Name : ";
+        puts(aname);
+    }
+
+    void modify_book()
+    {
+        cout<<"\nBook no. : "<<bno;
+        cout<<"\nModify Book Name : ";
+        gets(bname);
+        cout<<"\nModify Author's Name of Book : ";
+        gets(aname);
+    }
+
+    char* retbno()
+    {
+        return bno;
+    }
+
+    void report()
+    {cout<<bno<<setw(30)<<bname<<setw(30)<<aname<<endl;}
+
+
+};
+
+fstream fp,fp1;
+book bk;
+
+void write_book()
+{
+    char ch;
+    fp.open("book.dat",ios::out|ios::app);
+    do
+    {
+        clrscr();
+        bk.create_book();
+        fp.write((char*)&bk,sizeof(book));
+        cout<<"\n\nDo you want to add more record..(y/n?)";
+        cin>>ch;
+    }while(ch=='y'||ch=='Y');
+    fp.close();
+}
+
+void display_spb(char n[])
+{
+    cout<<"\nBOOK DETAILS\n";
+    int flag=0;
+    fp.open("book.dat",ios::in);
+    while(fp.read((char*)&bk,sizeof(book)))
+    {
+        if(strcmpi(bk.retbno(),n)==0)
+        {
+            bk.show_book();
+             flag=1;
+        }
+    }
+    
+    fp.close();
+    if(flag==0)
+        cout<<"\n\nBook does not exist";
+    getch();
+}
+
+void modify_book()
+{
+    char n[6];
+    int found=0;
+    clrscr();
+    cout<<"\n\n\tMODIFY BOOK REOCORD.... ";
+    cout<<"\n\n\tEnter The book no. of The book";
+    cin>>n;
+    fp.open("book.dat",ios::in|ios::out);
+    while(fp.read((char*)&bk,sizeof(book)) && found==0)
+    {
+        if(strcmpi(bk.retbno(),n)==0)
+        {
+            bk.show_book();
+            cout<<"\nEnter The New Details of book"<<endl;
+            bk.modify_book();
+            int pos=-1*sizeof(bk);
+                fp.seekp(pos,ios::cur);
+                fp.write((char*)&bk,sizeof(book));
+                cout<<"\n\n\t Record Updated";
+                found=1;
+        }
+    }
+
+        fp.close();
+        if(found==0)
+            cout<<"\n\n Record Not Found ";
+        getch();
+}
+
+void delete_book()
+{
+    char n[6];
+    clrscr();
+    cout<<"\n\n\n\tDELETE BOOK ...";
+    cout<<"\n\nEnter The Book no. of the Book You Want To Delete : ";
+    cin>>n;
+    fp.open("book.dat",ios::in|ios::out);
+    fstream fp2;
+    fp2.open("Temp.dat",ios::out);
+    fp.seekg(0,ios::beg);
+    while(fp.read((char*)&bk,sizeof(book)))
+    {
+        if(strcmpi(bk.retbno(),n)!=0)  
+        {
+            fp2.write((char*)&bk,sizeof(book));
+        }
+    }
+        
+    fp2.close();
+        fp.close();
+        remove("book.dat");
+        rename("Temp.dat","book.dat");
+        cout<<"\n\n\tRecord Deleted ..";
+        getch();
+}
+
+void display_allb()
+{
+    clrscr();
+    fp.open("book.dat",ios::in);
+    if(!fp)
+    {
+        cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
+               getch();
+               return;
+         }
+
+    cout<<"\n\n\t\tBook LIST\n\n";
+    cout<<"=========================================================================\n";
+    cout<<"Book Number"<<setw(20)<<"Book Name"<<setw(25)<<"Author\n";
+    cout<<"=========================================================================\n";
+
+    while(fp.read((char*)&bk,sizeof(book)))
+    {
+        bk.report();
+    }
+         fp.close();
+         getch();
+}

@@ -11,52 +11,45 @@ class Book
 {
 private:
 
-	string name;
-	string author;
-	string genre;
+	char bookName[50];
+	char authorName[20];
 	float rating;
 	bool onRead;
 
 public:
-	void createBook( string na, string au, string ge, float ra, bool re);
-	void showBook();
-	void getBooks();
+	void create_book()
+		{
+			cout<<"\n...Add New Book...\n";
+			cout<<"\nEnter name of the Book: ";
+			gets(bookName);
+			cout<<"\nEnter Author's name: ";
+			gets(authorName);
+			cout<<"\nEnter Book's rating: ";
+			cin>>rating;
+			cout<<"\n\nBook Created..";
+		}
+	void show_book()
+		{
+			cout<<"\nBook Name: ";
+			puts(bookName);
+			cout<<"\nAuthor Name: ";
+			puts(authorName);
+			cout<<"\nRating: ";
+			cout<<rating;
+		}
+	
 	bool getRead()
-	{
-		return onRead;
-	}
-	void report(){
-		cout<<name<<"\t"<<author<<endl;
-	}
+		{
+			return onRead;
+		}
+	
+    void report()
+    	{
+			cout<<bookName<<setw(30)<<authorName<<endl;
+		}
 
-}B;
+};
 
-void Book::createBook(string na, string au, string ge, float ra, bool re)
-{
-
-
-	B.name = na;
-	B.author = au;
-	B.genre = ge;
-	B.rating = ra;
-	B.onRead = re;
-
-	ofstream fout;
-
-	char ch;
-    fout.open("bookDatabase.dat",ios::out|ios::app);
-	if (!fout.is_open())
-	{
-		cerr << "Error: file could not be opened" << endl;
-		exit(1);
-	}
-    fout.write((char *)&B, sizeof(B));
-
-	cout << "\n";
-	cout << "\nThe Book with above attributes is Saved!\n";
-
-	fout.close();
-}
 
 void Book::showBook()
 {
