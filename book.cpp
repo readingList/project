@@ -10,7 +10,6 @@ using namespace std;
 class Book
 {
 private:
-
 	char bookName[50];
 	char authorName[20];
 	float rating;
@@ -26,160 +25,130 @@ public:
 			gets(authorName);
 			cout<<"\nEnter Book's rating: ";
 			cin>>rating;
-			cout<<"\n\nBook Created..";
+			cout<<"\nAdd book on read (y/n): ";
+			cin >> re;
+			while(re != 'y' || re != 'Y' || re != 'n' || re != 'N')
+				{
+					cout<<"\nWrong choice! Enter again...\n";
+					cout<<"\nAdd book on read (y/n): ";
+					cin>>re;
+				}
+			cout<<"\n\nBook Created !";
 		}
+
 	void show_book()
 		{
 			cout<<"\nBook Name: ";
 			puts(bookName);
 			cout<<"\nAuthor Name: ";
 			puts(authorName);
-			cout<<"\nRating: ";
-			cout<<rating;
+			cout<<"\nRating: "<<rating;
+		}
+
+	void modify_book()
+		{
+			cout<<"\nModify Book Name: ";
+			gets(bname);
+			cout<<"\nModify Author's Name: ";
+			gets(aname);
+			cout<<"\nModify Book's rating: ";
+			cin>>rating;
 		}
 	
-	bool getRead()
+	bool get_read()
 		{
 			return onRead;
-		}
-	
-    void report()
-    	{
-			cout<<bookName<<setw(30)<<authorName<<endl;
 		}
 
 };
 
+fstream fp,fp1;
+book bk;
 
-void Book::showBook()
-{
-	cout<<"\nBOOK DETAILS\n";
-    int flag=0;
-	ifstream fin;
-    fin.open("bookDatabase.dat",ios::in);
-    while(fin.read((char*)&B,sizeof(Book)))
-    {
-        if(!fin.eof())
-        {
-            cout << "\nName of the Book: " << B.name;
-            cout << "\nAuthor: " << B.author;
-            cout << "\nGenre: " << B.genre;
-            cout << "\nRating: " << B.rating;;
-            flag=1;
-        }
-    }
-
-    fin.close();
-    if(flag==0)
-        cout<<"\n\nBook does not exist";
-    getch();
-}
-
-int getBooks()
-{
-	Book B;
-	ifstream fin;
-	fin.open("bookDatabase.dat", ios::binary| ios::in);
-	if (!fin.is_open())
+void write_book()
 	{
-		cerr << "Error: file could not be opened" << endl;
-		exit(1);
+		char ch;
+		fp.open("book.dat",ios::out|ios::app);
+		do
+			{   
+				bk.create_book();
+				fp.write((char*)&bk,sizeof(book));
+				cout<<"\n\nDo you want to add more record..(y/n?)";
+				cin>>ch;
+			}while(ch=='y' || ch=='Y');
+		fp.close();
 	}
-	int Bcount = 0;
-	fin.seekg(0);
 
-	while (fin.read((char *)&B, sizeof(Book)))
+void display_book()
 	{
-		Bcount++;
-		B.showBook();
+		cout<<"\nBook Details\n";
+		int flag=0;
+		fp1.open("book.dat",ios::in);
+		while(fp1.read((char*)&bk,sizeof(book)))
+			{
+				if(bk.get_read())
+					{
+						bk.show_book();
+						flag=1;
+					}
+			}
+		fp1.close();
+		if(flag==0)
+			cout<<"\n\nBook does not exist";
 	}
-	fin.close();
-	return Bcount;
-}
-/*
-void display_allb()
-{
 
-	fstream fout;
-    fout.open("book.dat",ios::in);
-    if(!fout)
-    {
-        cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
-               getch();
-               return;
-         }
+void all_books()
+	{
+		fp1.open("book.dat",ios::in);
+		if(!fp1)
+			{
+				cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
+					return;
+			}
 
-    cout<<"\n\nBook LIST\n\n";
+		cout<<"\nAll Books\n\n";
+		while(fp1.read((char*)&bk,sizeof(book)))
+			{
+				bk.show();
+			}
+		fp1.close();
+	}
 
-    cout<<"Book Number      "<<"Book Name	"<<"Author		\n";
 
-    while(fout.read((char*)&B,sizeof(Book)))
-    {
-        B.report();
-    }
-         fout.close();
-         getch();
-}
-*/
 int main()
 {
 
-	Book B;
 	int choice, noB;
-	string name, author, genre;
-	float rating;
-	char wish = 'y', re;
+	char wish = 'y';
 
-	while (wish == 'y' || wish == 'Y')
-	{
-		cout << "\n -: Menu :-\n";
-		cout << "\n 1. Create Book\n 2. Display Books on read\n 3. More functions soon\n 4. Exit\n";
-		cout << "\nEnter corresponding serial number: ";
-		cin >> choice;
-		getchar();
-
-		switch (choice)
+	while(wish == 'y' || wish == 'Y')
 		{
-		case 1:
+			cout << "\n -: Menu :-\n";
+			cout << "\n 1. Create Book\n 2. Display Books on read\n 3. Display All Books\n 4. Exit\n";
+			cout << "\nEnter corresponding serial number: ";
+			cin >> choice;
+			
+			switch (choice)
+				{
+				case 1:
+					write_book();
+					break;
+				case 2:
+					display_book();
+					break;
+				case 3:
+					all_books();
+					break;
+				case 4:
+					exit(0);
+					break;
+				default:
+					cout << "Wrong Choice.\n";
+					break;
+				}
 
-			cout << "\nEnter name of the book: ";
-			getline(cin, name);
-			cout << "Enter name of the author: ";
-			getline(cin, author);
-			cout << "Enter genre: ";
-			getline(cin, genre);
-			cout << "Rate the book: ";
-			cin >> rating;
-		readChoice:
-			cout << "Add book on read (y/n): ";
-			cin >> re;
-			if (re == 'y' || re == 'Y')
-				B.createBook(name, author, genre, rating, true);
-			else if (re == 'n' || re == 'N')
-				B.createBook(name, author, genre, rating, false);
-			else
-			{
-				cout << "Wrong choice! Enter again...\n";
-				goto readChoice;
-			}
-			break;
-		case 2:
-			noB = getBooks();
-			if (!noB)
-				cout << "No books are on read.\n";
-			break;
-		case 3:
-			cout << "Stay tuned !!\n";
-			break;
-		case 4:
-			exit(0);
-			break;
-		default:
-			cout << "Wrong Choice.\n";
-			break;
+			cout << "\nWant to enter more? (y/n): ";
+			cin >> wish;
 		}
-		cout << "\nWant to enter more? (y/n): ";
-		cin >> wish;
-	}
 	return 0;
 }
