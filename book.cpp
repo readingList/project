@@ -6,8 +6,6 @@
 #include<iomanip.h>
 
 
-using namespace std;
-
 class Book
 {
 private:
@@ -20,24 +18,24 @@ private:
 public:
 	void create_book()
 	{
-        cout<<"\nCREATE NEW BOOK\n";
-        cout<<"\nEnter The book number: ";
-        cin>>bookNum;
-        cout<<"\nEnter Book's name: ";
-        gets(bookName);
-        cout<<"\nEnter Author's name: ";
-        gets(authorName);
-        cout<<"\nEnter Ratting of book: ";
-        cin>>rating;
-        cout<<"\nWant to add book to read? (y/n): ";
-        cin>>onRead;
-        while(onRead != 'y' || onRead != 'Y' || onRead != 'n' || onRead != 'N');
-        {
-            cout<<"\n\nWrong Choice !!";
-            cout<<"\nWant to add book to read? (y/n): ";
-            cin>>onRead;
-        }
-        cout<<"\n\nBook Created..";
+	cout<<"\nCREATE NEW BOOK\n";
+	cout<<"\nEnter The book number: ";
+	cin>>bookNum;
+	cout<<"\nEnter Book's name: ";
+	gets(bookName);
+	cout<<"\nEnter Author's name: ";
+	gets(authorName);
+	cout<<"\nEnter Ratting of book: ";
+	cin>>rating;
+	cout<<"\nWant to add book to read? (y/n): ";
+	cin>>onRead;
+	while(onRead != 'y' || onRead != 'Y' || onRead != 'n' || onRead != 'N')
+	{
+	    cout<<"\n\nWrong Choice !!";
+	    cout<<"\nWant to add book to read? (y/n): ";
+	    cin>>onRead;
+	}
+	cout<<"\n\nBook Created..";
     }
 
 	void show_book()
@@ -68,11 +66,11 @@ public:
 			}
 		}
 
-	bool get_read()
+	char get_read()
 		{
 			return onRead;
 		}
-	
+
     void report()
     {cout<<bookNum<<setw(30)<<bookName<<setw(30)<<authorName<<endl;}
 
@@ -87,11 +85,11 @@ void write_book()
     fp.open("book.dat",ios::out|ios::app);
     do
     {
-        clrscr();
-        bk.create_book();
-        fp.write((char*)&bk,sizeof(book));
-        cout<<"\n\nDo you want to add more record..(y/n?)";
-        cin>>ch;
+	clrscr();
+	bk.create_book();
+		fp.write((char*)&bk,sizeof(Book));
+	cout<<"\n\nDo you want to add more record..(y/n?)";
+	cin>>ch;
     }while(ch=='y'||ch=='Y');
     fp.close();
 }
@@ -103,7 +101,7 @@ void display_book()
 		fp1.open("book.dat",ios::in);
 		while(fp1.read((char*)&bk,sizeof(Book)))
 			{
-				if(bk.get_read())
+				if(strcmpi(bk.get_read(), 'y')==0)
 					{
 						bk.show_book();
 						flag=1;
@@ -128,7 +126,7 @@ void all_books()
 		cout<<"\n\n\t\tBook LIST\n\n";
 		cout<<"Book Number"<<setw(20)<<"Book Name"<<setw(25)<<"Author\n";
 
-		while(fp.read((char*)&bk,sizeof(book)))
+		while(fp.read((char*)&bk,sizeof(Book)))
 		{
 			bk.report();
 		}
@@ -145,7 +143,7 @@ void modify_book()
 		cout<<"\n\n\tEnter The book no. of The book";
 		cin>>n;
 		fp.open("book.dat",ios::in|ios::out);
-		while(fp.read((char*)&bk,sizeof(book)) && found==0)
+		while(fp.read((char*)&bk,sizeof(Book)) && found==0)
 		{
 			if(strcmpi(bk.getBookNum(),n)==0)
 			{
@@ -154,7 +152,7 @@ void modify_book()
 				bk.modify_book();
 				int pos=-1*sizeof(bk);
 					fp.seekp(pos,ios::cur);
-					fp.write((char*)&bk,sizeof(book));
+					fp.write((char*)&bk,sizeof(Book));
 					cout<<"\n\n\t Record Updated";
 					found=1;
 			}
@@ -177,11 +175,11 @@ void delete_book()
 		fstream fp2;
 		fp2.open("Temp.dat",ios::out);
 		fp.seekg(0,ios::beg);
-		while(fp.read((char*)&bk,sizeof(book)))
+		while(fp.read((char*)&bk,sizeof(Book)))
 		{
 			if(strcmpi(bk.getBookNum(),n)!=0)
 			{
-				fp2.write((char*)&bk,sizeof(book));
+				fp2.write((char*)&bk,sizeof(Book));
 			}
 		}
 
