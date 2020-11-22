@@ -1,8 +1,9 @@
-#include <fstream>
-#include <iostream>
-#include <stdio.h>
-#include <string.h>
-#include <conio.h>
+#include<fstream.h>
+#include<conio.h>
+#include<stdio.h>
+#include<process.h>
+#include<string.h>
+#include<iomanip.h>
 
 
 using namespace std;
@@ -10,34 +11,38 @@ using namespace std;
 class Book
 {
 private:
+	char bookNum[6];
 	char bookName[50];
 	char authorName[20];
 	float rating;
-	bool onRead;
+    char onRead;
 
 public:
 	void create_book()
-		{
-			cout<<"\n...Add New Book...\n";
-			cout<<"\nEnter name of the Book: ";
-			gets(bookName);
-			cout<<"\nEnter Author's name: ";
-			gets(authorName);
-			cout<<"\nEnter Book's rating: ";
-			cin>>rating;
-			cout<<"\nAdd book on read (y/n): ";
-			cin>>onRead;
-			while(onRead != 'y' || onRead != 'Y' || onRead != 'n' || onRead != 'N')
-				{
-					cout<<"\nWrong choice! Enter again...\n";
-					cout<<"\nAdd book on read (y/n): ";
-					cin>>onRead;
-				}
-			cout<<"\n\nBook Created !";
-		}
+	{
+        cout<<"\nCREATE NEW BOOK\n";
+        cout<<"\nEnter The book number: ";
+        cin>>bookNum;
+        cout<<"\nEnter Book's name: ";
+        gets(bookName);
+        cout<<"\nEnter Author's name: ";
+        gets(authorName);
+        cout<<"\nEnter Ratting of book: ";
+        cin>>rating;
+        cout<<"\nWant to add book to read? (y/n): ";
+        cin>>onRead;
+        while(onRead != 'y' || onRead != 'Y' || onRead != 'n' || onRead != 'N');
+        {
+            cout<<"\n\nWrong Choice !!";
+            cout<<"\nWant to add book to read? (y/n): ";
+            cin>>onRead;
+        }
+        cout<<"\n\nBook Created..";
+    }
 
 	void show_book()
 		{
+			cout<<"\nBook Number: "<<bookNum;
 			cout<<"\nBook Name: ";
 			puts(bookName);
 			cout<<"\nAuthor Name: ";
@@ -53,6 +58,14 @@ public:
 			gets(authorName);
 			cout<<"\nModify Book's rating: ";
 			cin>>rating;
+			cout<<"\nWant to add book to read? (y/n): ";
+			cin>>onRead;
+			while(onRead != 'y' || onRead != 'Y' || onRead != 'n' || onRead != 'N');
+			{
+				cout<<"\n\nWrong Choice !!";
+				cout<<"\nWant to add book to read? (y/n): ";
+				cin>>onRead;
+			}
 		}
 
 	bool get_read()
