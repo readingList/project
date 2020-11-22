@@ -72,6 +72,9 @@ public:
 		{
 			return onRead;
 		}
+	
+    void report()
+    {cout<<bookNum<<setw(30)<<bookName<<setw(30)<<authorName<<endl;}
 
 };
 
@@ -79,18 +82,19 @@ fstream fp,fp1;
 Book bk;
 
 void write_book()
-	{
-		char ch;
-		fp.open("book.dat",ios::out|ios::app);
-		do
-			{
-				bk.create_book();
-				fp.write((char*)&bk,sizeof(Book));
-				cout<<"\n\nDo you want to add more record..(y/n?)";
-				cin>>ch;
-			}while(ch=='y' || ch=='Y');
-		fp.close();
-	}
+{
+    char ch;
+    fp.open("book.dat",ios::out|ios::app);
+    do
+    {
+        clrscr();
+        bk.create_book();
+        fp.write((char*)&bk,sizeof(book));
+        cout<<"\n\nDo you want to add more record..(y/n?)";
+        cin>>ch;
+    }while(ch=='y'||ch=='Y');
+    fp.close();
+}
 
 void display_book()
 	{
