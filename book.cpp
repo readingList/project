@@ -6,78 +6,66 @@
 #include<iomanip.h>
 
 
-class Book
+class book
 {
-private:
 	char bookNum[6];
 	char bookName[50];
 	char authorName[20];
-	float rating;
     char onRead;
-
 public:
 	void create_book()
 	{
-	cout<<"\nCREATE NEW BOOK\n";
-	cout<<"\nEnter The book number: ";
-	cin>>bookNum;
-	cout<<"\nEnter Book's name: ";
-	gets(bookName);
-	cout<<"\nEnter Author's name: ";
-	gets(authorName);
-	cout<<"\nEnter Ratting of book: ";
-	cin>>rating;
-	cout<<"\nWant to add book to read? (y/n): ";
-	cin>>onRead;
-	while(onRead != 'y' || onRead != 'Y' || onRead != 'n' || onRead != 'N')
-	{
-	    cout<<"\n\nWrong Choice !!";
-	    cout<<"\nWant to add book to read? (y/n): ";
-	    cin>>onRead;
-	}
-	cout<<"\n\nBook Created..";
+        cout<<"\nCREATE NEW BOOK...\n";
+        cout<<"\nEnter The book no.";
+        cin>>bookNum;
+        cout<<"\n\nEnter The Name of The Book ";
+        gets(bookName);
+        cout<<"\n\nEnter The Author's Name ";
+        gets(authorName);
+        cout<<"\nWant to add book to read? (y/n): ";
+        cin>>onRead;
+        cout<<"\n\n\nBook Created..";
     }
 
-	void show_book()
-		{
-			cout<<"\nBook Number: "<<bookNum;
-			cout<<"\nBook Name: ";
-			puts(bookName);
-			cout<<"\nAuthor Name: ";
-			puts(authorName);
-			cout<<"\nRating: "<<rating;
-		}
+    void show_book()
+    {
+        cout<<"\nBook no. : "<<bookNum;
+        cout<<"\nBook Name : ";
+        puts(bookName);
+        cout<<"Author Name : ";
+        puts(authorName);
+    }
 
-	void modify_book()
-		{
-			cout<<"\nModify Book Name: ";
-			gets(bookName);
-			cout<<"\nModify Author's Name: ";
-			gets(authorName);
-			cout<<"\nModify Book's rating: ";
-			cin>>rating;
-			cout<<"\nWant to add book to read? (y/n): ";
-			cin>>onRead;
-			while(onRead != 'y' || onRead != 'Y' || onRead != 'n' || onRead != 'N');
-			{
-				cout<<"\n\nWrong Choice !!";
-				cout<<"\nWant to add book to read? (y/n): ";
-				cin>>onRead;
-			}
-		}
+    void modify_book()
+    {
+        cout<<"\nBook no. : "<<bookNum;
+        cout<<"\nModify Book Name : ";
+        gets(bookName);
+        cout<<"\nModify Author's Name of Book : ";
+        gets(authorName);
+        cout<<"\nModify wheter to add book to read? (y/n): ";
+        cin>>onRead;
+    }
 
-	char get_read()
-		{
-			return onRead;
-		}
+    char* getBookNum()
+    {
+	    return bookNum;
+    }
+
+    char getRead()
+    {
+        return onRead;
+    }
 
     void report()
     {cout<<bookNum<<setw(30)<<bookName<<setw(30)<<authorName<<endl;}
 
 };
 
+
 fstream fp,fp1;
-Book bk;
+book bk;
+
 
 void write_book()
 {
@@ -85,152 +73,158 @@ void write_book()
     fp.open("book.dat",ios::out|ios::app);
     do
     {
-	clrscr();
-	bk.create_book();
-		fp.write((char*)&bk,sizeof(Book));
-	cout<<"\n\nDo you want to add more record..(y/n?)";
-	cin>>ch;
+        clrscr();
+        bk.create_book();
+        fp.write((char*)&bk,sizeof(book));
+        cout<<"\n\nDo you want to add more record..(y/n?)";
+        cin>>ch;
     }while(ch=='y'||ch=='Y');
     fp.close();
 }
 
-void display_book()
-	{
-		cout<<"\nBook Details\n";
-		int flag=0;
-		fp1.open("book.dat",ios::in);
-		while(fp1.read((char*)&bk,sizeof(Book)))
-			{
-				if(strcmpi(bk.get_read(), 'y')==0)
-					{
-						bk.show_book();
-						flag=1;
-					}
-			}
-		fp1.close();
-		if(flag==0)
-			cout<<"\n\nBook does not exist";
-	}
 
-void all_books()
-	{
-		clrscr();
-		fp.open("book.dat",ios::in);
-		if(!fp)
-		{
-			cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
-				getch();
-				return;
-			}
+void display_spb(char n[])
+{
+    cout<<"\nBOOK DETAILS\n";
+    int flag=0;
+    fp.open("book.dat",ios::in);
+    while(fp.read((char*)&bk,sizeof(book)))
+    {
+        if(strcmpi(bk.getBookNum(),n)==0)
+        {
+            bk.show_book();
+             flag=1;
+        }
+    }
 
-		cout<<"\n\n\t\tBook LIST\n\n";
-		cout<<"Book Number"<<setw(20)<<"Book Name"<<setw(25)<<"Author\n";
+    fp.close();
+    if(flag==0)
+        cout<<"\n\nBook does not exist";
+    getch();
+}
 
-		while(fp.read((char*)&bk,sizeof(Book)))
-		{
-			bk.report();
-		}
-			fp.close();
-			getch();
-	}
 
 void modify_book()
-	{
-		char n[6];
-		int found=0;
-		clrscr();
-		cout<<"\n\n\tMODIFY BOOK REOCORD.... ";
-		cout<<"\n\n\tEnter The book no. of The book";
-		cin>>n;
-		fp.open("book.dat",ios::in|ios::out);
-		while(fp.read((char*)&bk,sizeof(Book)) && found==0)
-		{
-			if(strcmpi(bk.getBookNum(),n)==0)
-			{
-				bk.show_book();
-				cout<<"\nEnter The New Details of book"<<endl;
-				bk.modify_book();
-				int pos=-1*sizeof(bk);
-					fp.seekp(pos,ios::cur);
-					fp.write((char*)&bk,sizeof(Book));
-					cout<<"\n\n\t Record Updated";
-					found=1;
-			}
-		}
+{
+    char n[6];
+    int found=0;
+    clrscr();
+    cout<<"\n\n\tMODIFY BOOK REOCORD.... ";
+    cout<<"\n\n\tEnter The book no. of The book";
+    cin>>n;
+    fp.open("book.dat",ios::in|ios::out);
+    while(fp.read((char*)&bk,sizeof(book)) && found==0)
+    {
+        if(strcmpi(bk.getBookNum(),n)==0)
+        {
+            bk.show_book();
+            cout<<"\nEnter The New Details of book"<<endl;
+            bk.modify_book();
+            int pos=-1*sizeof(bk);
+                fp.seekp(pos,ios::cur);
+                fp.write((char*)&bk,sizeof(book));
+                cout<<"\n\n\t Record Updated";
+                found=1;
+        }
+    }
 
-			fp.close();
-			if(found==0)
-				cout<<"\n\n Record Not Found ";
-			getch();
-	}
+        fp.close();
+        if(found==0)
+            cout<<"\n\n Record Not Found ";
+        getch();
+}
+
 
 void delete_book()
-	{
-		char n[6];
-		clrscr();
-		cout<<"\n\n\n\tDELETE BOOK ...";
-		cout<<"\n\nEnter The Book no. of the Book You Want To Delete : ";
-		cin>>n;
-		fp.open("book.dat",ios::in|ios::out);
-		fstream fp2;
-		fp2.open("Temp.dat",ios::out);
-		fp.seekg(0,ios::beg);
-		while(fp.read((char*)&bk,sizeof(Book)))
-		{
-			if(strcmpi(bk.getBookNum(),n)!=0)
-			{
-				fp2.write((char*)&bk,sizeof(Book));
-			}
-		}
-
-		fp2.close();
-			fp.close();
-			remove("book.dat");
-			rename("Temp.dat","book.dat");
-			cout<<"\n\n\tRecord Deleted ..";
-			getch();
-	}
-
-int main()
 {
+    char n[6];
+    clrscr();
+    cout<<"\n\n\n\tDELETE BOOK ...";
+    cout<<"\n\nEnter The Book no. of the Book You Want To Delete : ";
+    cin>>n;
+    fp.open("book.dat",ios::in|ios::out);
+    fstream fp2;
+    fp2.open("Temp.dat",ios::out);
+    fp.seekg(0,ios::beg);
+    while(fp.read((char*)&bk,sizeof(book)))
+    {
+        if(strcmpi(bk.getBookNum(),n)!=0)
+        {
+            fp2.write((char*)&bk,sizeof(book));
+        }
+    }
 
-	int choice, noB;
-	char wish = 'y';
+    fp2.close();
+        fp.close();
+        remove("book.dat");
+        rename("Temp.dat","book.dat");
+        cout<<"\n\n\tRecord Deleted ..";
+        getch();
+}
 
-	while(wish == 'y' || wish == 'Y')
-		{
-			cout << "\n -: Menu :-\n";
-			cout << "\n 1. Create Book\n 2. Display Books on read\n 3. Display All Books\n4. Modify Book\n5. Delete Book\n 6. Exit\n";
-			cout << "\nEnter corresponding serial number: ";
-			cin >> choice;
 
-			switch (choice)
-				{
-				case 1:
-					write_book();
-					break;
-				case 2:
-					display_book();
-					break;
-				case 3:
-					all_books();
-					break;
-				case 4:
-					modify_book();
-					break;
-				case 5:
-					delete_book();
-					break;
-				case 6:
-					exit(0);
-					break;
-				default:
-					cout << "Wrong Choice.\n";
-					break;
-				}
+void display_allb()
+{
+    clrscr();
+    fp.open("book.dat",ios::in);
+    if(!fp)
+    {
+        cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
+               getch();
+               return;
+        }
 
-			cout << "\nWant to enter more? (y/n): ";
-			cin >> wish;
-		}
-	return 0;
+    cout<<"\n\n\t\tBook LIST\n\n";
+    cout<<"=========================================================================\n";
+    cout<<"Book Number"<<setw(20)<<"Book Name"<<setw(25)<<"Author\n";
+    cout<<"=========================================================================\n";
+
+    while(fp.read((char*)&bk,sizeof(book)))
+    {
+        bk.report();
+    }
+         fp.close();
+         getch();
+}
+
+
+void admin_menu()
+{
+    clrscr();
+    int ch2;
+    cout<<"\n\n\n\t -: MENU :-";
+    cout<<"\n\n\t1.CREATE BOOK ";
+    cout<<"\n\n\t2.DISPLAY ALL BOOKS ";
+    cout<<"\n\n\t3.DISPLAY SPECIFIC BOOK ";
+    cout<<"\n\n\t4.MODIFY BOOK ";
+    cout<<"\n\n\t5.DELETE BOOK ";
+    cout<<"\n\n\t6.EXIT ";
+    cout<<"\n\n\tPlease Enter Your Choice (1-6) ";
+    cin>>ch2;
+    switch(ch2)
+    {
+        case 1: clrscr();
+            write_book();break;
+        case 2: display_allb();break;
+        case 3: {
+                   char num[6];
+                   clrscr();
+                   cout<<"\n\n\tPlease Enter The book No. ";
+                   cin>>num;
+                   display_spb(num);
+                   break;
+                }
+        case 4: modify_book();break;
+        case 5: delete_book();break;
+        case 6: exit(0);
+        default:cout<<"\a";
+       }
+       admin_menu();
+}
+
+
+void main()
+{
+    char ch;
+    admin_menu();
 }

@@ -66,11 +66,11 @@ public:
 			}
 		}
 
-	char* get_read()
+	char get_read()
 		{
 			return onRead;
 		}
-	
+
     void report()
     {cout<<bookNum<<setw(30)<<bookName<<setw(30)<<authorName<<endl;}
 
@@ -85,11 +85,11 @@ void write_book()
     fp.open("book.dat",ios::out|ios::app);
     do
     {
-        clrscr();
-        bk.create_book();
+	clrscr();
+	bk.create_book();
 		fp.write((char*)&bk,sizeof(Book));
-        cout<<"\n\nDo you want to add more record..(y/n?)";
-        cin>>ch;
+	cout<<"\n\nDo you want to add more record..(y/n?)";
+	cin>>ch;
     }while(ch=='y'||ch=='Y');
     fp.close();
 }
@@ -101,7 +101,7 @@ void display_book()
 		fp1.open("book.dat",ios::in);
 		while(fp1.read((char*)&bk,sizeof(Book)))
 			{
-				if(strcmpi(bk.getRead(), 'y')==0)
+				if(strcmpi(bk.get_read(), 'y')==0)
 					{
 						bk.show_book();
 						flag=1;

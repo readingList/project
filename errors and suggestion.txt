@@ -1,9 +1,8 @@
 erros:
-1. Do you want to add more record..(y/n?)y  //not working got stuck in loop
-2. Unexpected appearance of "BOOK DETAILS" and "Book does not exist"
-3. Cant read book mp, its not saved at first place.
+
 
 suggestions:
 
-1. menu driven program    // ✔
-2. formatting of output
+1. menu driven program    ✔
+2. display all book func (change layout)
+3. add a func to display books that are on read (using bk.getRead())
