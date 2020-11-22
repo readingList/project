@@ -131,6 +131,36 @@ void all_books()
 		fp1.close();
 	}
 
+void modify_book()
+	{
+		char n[6];
+		int found=0;
+		clrscr();
+		cout<<"\n\n\tMODIFY BOOK REOCORD.... ";
+		cout<<"\n\n\tEnter The book no. of The book";
+		cin>>n;
+		fp.open("book.dat",ios::in|ios::out);
+		while(fp.read((char*)&bk,sizeof(book)) && found==0)
+		{
+			if(strcmpi(bk.getBookNum(),n)==0)
+			{
+				bk.show_book();
+				cout<<"\nEnter The New Details of book"<<endl;
+				bk.modify_book();
+				int pos=-1*sizeof(bk);
+					fp.seekp(pos,ios::cur);
+					fp.write((char*)&bk,sizeof(book));
+					cout<<"\n\n\t Record Updated";
+					found=1;
+			}
+		}
+
+			fp.close();
+			if(found==0)
+				cout<<"\n\n Record Not Found ";
+			getch();
+	}
+
 
 int main()
 {
@@ -141,7 +171,7 @@ int main()
 	while(wish == 'y' || wish == 'Y')
 		{
 			cout << "\n -: Menu :-\n";
-			cout << "\n 1. Create Book\n 2. Display Books on read\n 3. Display All Books\n 4. Exit\n";
+			cout << "\n 1. Create Book\n 2. Display Books on read\n 3. Display All Books\n4. Modify Book\n5. Delete Book\n 6. Exit\n";
 			cout << "\nEnter corresponding serial number: ";
 			cin >> choice;
 
@@ -157,6 +187,12 @@ int main()
 					all_books();
 					break;
 				case 4:
+					modify_book();
+					break;
+				case 5:
+					//delete book func
+					break;
+				case 6:
 					exit(0);
 					break;
 				default:
