@@ -116,19 +116,24 @@ void display_book()
 
 void all_books()
 	{
-		fp1.open("book.dat",ios::in);
-		if(!fp1)
-			{
-				cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
-					return;
+		clrscr();
+		fp.open("book.dat",ios::in);
+		if(!fp)
+		{
+			cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
+				getch();
+				return;
 			}
 
-		cout<<"\nAll Books\n\n";
-		while(fp1.read((char*)&bk,sizeof(Book)))
-			{
-				bk.show_book();
-			}
-		fp1.close();
+		cout<<"\n\n\t\tBook LIST\n\n";
+		cout<<"Book Number"<<setw(20)<<"Book Name"<<setw(25)<<"Author\n";
+
+		while(fp.read((char*)&bk,sizeof(book)))
+		{
+			bk.report();
+		}
+			fp.close();
+			getch();
 	}
 
 void modify_book()
@@ -161,6 +166,32 @@ void modify_book()
 			getch();
 	}
 
+void delete_book()
+	{
+		char n[6];
+		clrscr();
+		cout<<"\n\n\n\tDELETE BOOK ...";
+		cout<<"\n\nEnter The Book no. of the Book You Want To Delete : ";
+		cin>>n;
+		fp.open("book.dat",ios::in|ios::out);
+		fstream fp2;
+		fp2.open("Temp.dat",ios::out);
+		fp.seekg(0,ios::beg);
+		while(fp.read((char*)&bk,sizeof(book)))
+		{
+			if(strcmpi(bk.getBookNum(),n)!=0)
+			{
+				fp2.write((char*)&bk,sizeof(book));
+			}
+		}
+
+		fp2.close();
+			fp.close();
+			remove("book.dat");
+			rename("Temp.dat","book.dat");
+			cout<<"\n\n\tRecord Deleted ..";
+			getch();
+	}
 
 int main()
 {
@@ -190,7 +221,7 @@ int main()
 					modify_book();
 					break;
 				case 5:
-					//delete book func
+					delete_book();
 					break;
 				case 6:
 					exit(0);
