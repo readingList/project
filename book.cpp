@@ -6,16 +6,14 @@
 #include<iomanip.h>
 
 
-class book
-{
+class book{
 	char bookNum[6];
 	char bookName[50];
 	char authorName[20];
 	char genre[20];
     char onRead;
 public:
-	void create_book()
-	{
+	void create_book(){
         cout<<"\nCREATE NEW BOOK...\n";
         cout<<"\nEnter The book no.: ";
         cin>>bookNum;
@@ -29,9 +27,7 @@ public:
         cin>>onRead;
         cout<<"\n\n\nBook Created..";
     }
-
-    void show_book()
-    {
+    void show_book(){
         cout<<"\nBook no.: "<<bookNum;
         cout<<"\nBook Name: ";
         puts(bookName);
@@ -40,9 +36,7 @@ public:
         cout<<"Genre: ";
         puts(genre);
     }
-
-    void modify_book()
-    {
+    void modify_book(){
         cout<<"\nBook no. : "<<bookNum;
         cout<<"\nModify Book Name : ";
         gets(bookName);
@@ -53,33 +47,24 @@ public:
         cout<<"\nModify wheter to add book to read? (y/n): ";
         cin>>onRead;
     }
-
-    char* getBookNum()
-    {
+    char* getBookNum(){
 	    return bookNum;
     }
-
-    char getRead()
-    {
+    char getRead(){
         return onRead;
     }
-
-    void report()
-    {cout<<bookNum<<setw(30)<<bookName<<setw(30)<<authorName<<endl;}
-
+    void report(){
+        cout<<bookNum<<setw(30)<<bookName<<setw(30)<<authorName<<endl;
+    }
 };
-
 
 fstream fp,fp1;
 book bk;
 
-
-void write_book()
-{
+void write_book(){
     char ch;
     fp.open("book.dat",ios::out|ios::app);
-    do
-    {
+    do{
         clrscr();
         bk.create_book();
         fp.write((char*)&bk,sizeof(book));
@@ -89,30 +74,23 @@ void write_book()
     fp.close();
 }
 
-
-void display_onRead()
-{
+void display_onRead(){
     cout<<"\nBOOK DETAILS\n";
     int flag=0;
     fp.open("book.dat",ios::in);
-    while(fp.read((char*)&bk,sizeof(book)))
-    {
-        if(bk.getRead() == 'y')
-        {
+    while(fp.read((char*)&bk,sizeof(book))){
+        if(bk.getRead() == 'y'){
             bk.show_book();
-             flag=1;
+            flag=1;
         }
     }
-
     fp.close();
     if(flag==0)
         cout<<"\n\nBook does not exist";
     getch();
 }
 
-
-void modify_book()
-{
+void modify_book(){
     char n[6];
     int found=0;
     clrscr();
@@ -120,30 +98,25 @@ void modify_book()
     cout<<"\n\n\tEnter The book no. of The book";
     cin>>n;
     fp.open("book.dat",ios::in|ios::out);
-    while(fp.read((char*)&bk,sizeof(book)) && found==0)
-    {
-        if(strcmpi(bk.getBookNum(),n)==0)
-        {
+    while(fp.read((char*)&bk,sizeof(book)) && found==0){
+        if(strcmpi(bk.getBookNum(),n)==0){
             bk.show_book();
             cout<<"\nEnter The New Details of book"<<endl;
             bk.modify_book();
             int pos=-1*sizeof(bk);
-                fp.seekp(pos,ios::cur);
-                fp.write((char*)&bk,sizeof(book));
-                cout<<"\n\n\t Record Updated";
-                found=1;
+            fp.seekp(pos,ios::cur);
+            fp.write((char*)&bk,sizeof(book));
+            cout<<"\n\n\t Record Updated";
+            found=1;
         }
     }
-
-        fp.close();
-        if(found==0)
-            cout<<"\n\n Record Not Found ";
-        getch();
+    fp.close();
+    if(found==0)
+        cout<<"\n\n Record Not Found ";
+    getch();
 }
 
-
-void delete_book()
-{
+void delete_book(){
     char n[6];
     clrscr();
     cout<<"\n\n\n\tDELETE BOOK ...";
@@ -153,50 +126,40 @@ void delete_book()
     fstream fp2;
     fp2.open("Temp.dat",ios::out);
     fp.seekg(0,ios::beg);
-    while(fp.read((char*)&bk,sizeof(book)))
-    {
-        if(strcmpi(bk.getBookNum(),n)!=0)
-        {
+    while(fp.read((char*)&bk,sizeof(book))){
+        if(strcmpi(bk.getBookNum(),n)!=0){
             fp2.write((char*)&bk,sizeof(book));
         }
     }
-
     fp2.close();
-        fp.close();
-        remove("book.dat");
-        rename("Temp.dat","book.dat");
-        cout<<"\n\n\tRecord Deleted ..";
-        getch();
+    fp.close();
+    remove("book.dat");
+    rename("Temp.dat","book.dat");
+    cout<<"\n\n\tRecord Deleted ..";
+    getch();
 }
 
-
-void display_allb()
-{
+void display_all(){
     clrscr();
     fp.open("book.dat",ios::in);
-    if(!fp)
-    {
+    if(!fp){
         cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
-               getch();
-               return;
-        }
-
+        getch();
+        return;
+    }
     cout<<"\n\n\t\tBook LIST\n\n";
     cout<<"=========================================================================\n";
     cout<<"Book Number"<<setw(20)<<"Book Name"<<setw(25)<<"Author\n";
     cout<<"=========================================================================\n";
-
-    while(fp.read((char*)&bk,sizeof(book)))
-    {
+    while(fp.read((char*)&bk,sizeof(book))){
         bk.report();
     }
-         fp.close();
-         getch();
+    fp.close();
+    getch();
 }
 
 
-void admin_menu()
-{
+void main_menu(){
     clrscr();
     int ch2;
     cout<<"\n\n\n\t -: MENU :-";
@@ -208,11 +171,10 @@ void admin_menu()
     cout<<"\n\n\t6.EXIT ";
     cout<<"\n\n\tPlease Enter Your Choice (1-6) ";
     cin>>ch2;
-    switch(ch2)
-    {
+    switch(ch2){
         case 1: clrscr();
-            write_book();break;
-        case 2: display_allb();break;
+                write_book();break;
+        case 2: display_all();break;
         case 3: {
                    clrscr();
                    display_onRead();
@@ -222,13 +184,10 @@ void admin_menu()
         case 5: delete_book();break;
         case 6: exit(0);
         default:cout<<"\a";
-       }
-       admin_menu();
+    }
+    main_menu();
 }
 
-
-void main()
-{
-    char ch;
-    admin_menu();
+void main(){
+    main_menu();
 }
