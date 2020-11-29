@@ -11,17 +11,20 @@ class book
 	char bookNum[6];
 	char bookName[50];
 	char authorName[20];
+	char genre[20];
     char onRead;
 public:
 	void create_book()
 	{
         cout<<"\nCREATE NEW BOOK...\n";
-        cout<<"\nEnter The book no.";
+        cout<<"\nEnter The book no.: ";
         cin>>bookNum;
-        cout<<"\n\nEnter The Name of The Book ";
+        cout<<"\nEnter The Name of The Book: ";
         gets(bookName);
-        cout<<"\n\nEnter The Author's Name ";
+        cout<<"\nEnter The Author's Name: ";
         gets(authorName);
+        cout<<"\nEnter Genre of book: ";
+        gets(genre);
         cout<<"\nWant to add book to read? (y/n): ";
         cin>>onRead;
         cout<<"\n\n\nBook Created..";
@@ -29,11 +32,13 @@ public:
 
     void show_book()
     {
-        cout<<"\nBook no. : "<<bookNum;
-        cout<<"\nBook Name : ";
+        cout<<"\nBook no.: "<<bookNum;
+        cout<<"\nBook Name: ";
         puts(bookName);
-        cout<<"Author Name : ";
+        cout<<"Author Name: ";
         puts(authorName);
+        cout<<"Genre: ";
+        puts(genre);
     }
 
     void modify_book()
@@ -43,6 +48,8 @@ public:
         gets(bookName);
         cout<<"\nModify Author's Name of Book : ";
         gets(authorName);
+        cout<<"\nModify Genre of Book : ";
+        gets(genre);
         cout<<"\nModify wheter to add book to read? (y/n): ";
         cin>>onRead;
     }
@@ -83,14 +90,14 @@ void write_book()
 }
 
 
-void display_spb(char n[])
+void display_onRead()
 {
     cout<<"\nBOOK DETAILS\n";
     int flag=0;
     fp.open("book.dat",ios::in);
     while(fp.read((char*)&bk,sizeof(book)))
     {
-        if(strcmpi(bk.getBookNum(),n)==0)
+        if(bk.getRead() == 'y')
         {
             bk.show_book();
              flag=1;
@@ -195,7 +202,7 @@ void admin_menu()
     cout<<"\n\n\n\t -: MENU :-";
     cout<<"\n\n\t1.CREATE BOOK ";
     cout<<"\n\n\t2.DISPLAY ALL BOOKS ";
-    cout<<"\n\n\t3.DISPLAY SPECIFIC BOOK ";
+    cout<<"\n\n\t3.DISPLAY BOOK(S) ON READ ";
     cout<<"\n\n\t4.MODIFY BOOK ";
     cout<<"\n\n\t5.DELETE BOOK ";
     cout<<"\n\n\t6.EXIT ";
@@ -207,11 +214,8 @@ void admin_menu()
             write_book();break;
         case 2: display_allb();break;
         case 3: {
-                   char num[6];
                    clrscr();
-                   cout<<"\n\n\tPlease Enter The book No. ";
-                   cin>>num;
-                   display_spb(num);
+                   display_onRead();
                    break;
                 }
         case 4: modify_book();break;
