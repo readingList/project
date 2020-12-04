@@ -31,9 +31,9 @@ public:
         cout<<"\nBook no.: "<<bookNum;
         cout<<"\nBook Name: ";
         puts(bookName);
-        cout<<"Author Name: ";
+        cout<<"\nAuthor Name: ";
         puts(authorName);
-        cout<<"Genre: ";
+        cout<<"\nGenre: ";
         puts(genre);
     }
     void modify_book(){
@@ -54,7 +54,7 @@ public:
         return onRead;
     }
     void report(){
-        cout<<bookNum<<setw(30)<<bookName<<setw(30)<<authorName<<endl;
+	    cout<<bookNum<<setw(25)<<bookName<<setw(25)<<authorName<<setw(25)<<genre<<endl;
     }
 };
 
@@ -148,9 +148,9 @@ void display_all(){
         return;
     }
     cout<<"\n\n\t\tBook LIST\n\n";
-    cout<<"=========================================================================\n";
-    cout<<"Book Number"<<setw(20)<<"Book Name"<<setw(25)<<"Author\n";
-    cout<<"=========================================================================\n";
+    cout<<"----------------------------------------------------------------------------\n";
+    cout<<"Book No."<<setw(12)<<"Book Name"<<setw(30)<<"Author"<<setw(25)<<"Genre\n";
+    cout<<"----------------------------------------------------------------------------\n";
     while(fp.read((char*)&bk,sizeof(book))){
         bk.report();
     }
