@@ -1,8 +1,0 @@
-erros:
-
-
-suggestions:
-
-1. menu driven program    ✔
-2. display all book func (change layout)
-3. add a func to display books that are on read (using bk.getRead())    ✔
